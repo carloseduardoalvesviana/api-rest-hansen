@@ -38,12 +38,13 @@ const UploadImageExameController = require('./controllers/UploadImageExameContro
 const PatientPreSignupController = require('./controllers/PatientPreSignupController');
 
 // Admin all
-routes.get('/admin/all', AdminController.index);
+routes.get('/admin/all', authorization.auth, AdminController.index);
+routes.delete('/admin/delete/:id', authorization.auth, AdminController.delete);
+routes.put('/admin/update/:id', authorization.auth, AdminController.update);
+routes.put('/users/update/permissions/admin/:id', authorization.auth, UpdatePermissions.store);
 
 // Pacientes Pré Cadastro
 routes.post('/patients/pre', authorization.auth, PatientPreSignupController.store);
-
-routes.put('/users/update/permissions/admin/:id', authorization.auth, UpdatePermissions.store);
 
 routes.post('/upload/image/exame', upload.imageUpload.single('image'), authorization.auth, UploadImageExameController.store);
 

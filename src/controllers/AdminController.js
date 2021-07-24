@@ -9,6 +9,23 @@ module.exports = {
     return res.status(200).json(users);
   },
 
+  async update(req, res) {
+    try {
+      await User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+      return res.status(200).json({ message: 'Usuário atualizado' });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  },
+
+  async delete(req, res) {
+    try {
+      await User.findOneAndDelete({ _id: req.params.id });
+      return res.status(200).json({ message: 'Usuário deletado' });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  },
 
   async store(req, res) {
     try {
