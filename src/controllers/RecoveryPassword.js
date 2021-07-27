@@ -6,15 +6,15 @@ module.exports = {
     try {
       const { email, cpf, newPassword } = req.body;
 
-      const userOk = await User.find({ email: email, cpf: cpf });
+      const userExists = await User.find({ cpf: cpf, email: email });
 
-      if (!userOk) {
-        return res.status(200).json({ message: false });
+      if (!userExists) {
+        return res.status(200).json({ message: 'usuario nao existe' });
       }
 
       let p = await bcrypt.hash(newPassword, 8);
 
-      await User.findOneAndUpdate({ cpf: cpf }, { password: p });
+      await User.findOneAndUpdate({ cpf: cpf }, { password: p }, { new: true });
 
       return res.status(200).json({ message: 'Senha recuperada' });
     } catch (error) {

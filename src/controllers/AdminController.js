@@ -11,6 +11,7 @@ module.exports = {
 
   async update(req, res) {
     try {
+      req.body.password = await bcrypt.hash(req.body.password, 8);
       await User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
       return res.status(200).json({ message: 'Usuário atualizado' });
     } catch (error) {
